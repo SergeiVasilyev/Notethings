@@ -8,22 +8,22 @@ from .services import create_note
 
 
 @login_required(login_url='/admin/login/')
-def main(request):
-    print(request.user)
-    
-    cat_list = ['one', 'two3', 'three']
-    cats = [Category.objects.get_or_create(name=cat)[0] for cat in cat_list]
+def main(request):  
+    # cat_list = ['one', 'two3', 'three']
+    # cats = [Category.objects.get_or_create(name=cat)[0] for cat in cat_list]
 
-    folder = 'main2'
-    folder, folder_created = Folder.objects.get_or_create(name=folder)
-    print('folder', folder)
+    # folder = 'main2'
+    # folder, folder_created = Folder.objects.get_or_create(name=folder)
 
-    name = 'Some name2'
-    text = "Some interesting text 2"
-    note = create_note(text=text, name=name, creator=request.user, category=cats, folder=folder)
+    # name = 'Some name2'
+    # text = "Some interesting text 2"
+    # note = create_note(text=text, name=name, creator=request.user, category=cats, folder=folder)
+
+    all_notes = Note.objects.all()
 
     context = {
-        'note': note
+        # 'note': note,
+        'all_notes': all_notes
     }
     return render(request, 'main.html', context)
 
