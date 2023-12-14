@@ -19,9 +19,10 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from noteapp.views import main
+from noteapp.views import main, new_note
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', main),
+    path('', main, name='main'),
+    path('new_note/', new_note, name='new_note'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
