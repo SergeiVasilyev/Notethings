@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate
 
@@ -26,6 +26,34 @@ def main(request):
         'all_notes': all_notes
     }
     return render(request, 'main.html', context)
+
+@login_required(login_url='/admin/login/')
+def new_note(request):
+    cat_list = ['one3']
+    cats = [Category.objects.get_or_create(name=cat)[0] for cat in cat_list]
+
+    folder = 'main'
+    folder, folder_created = Folder.objects.get_or_create(name=folder)
+
+    name = 'The Second Best music list'
+    text = """Olivia Rodrigo - "drivers license"
+            Lil Nas X - "Montero (Call Me By Your Name)"
+            The Weeknd - "Save Your Tears"
+            Dua Lipa - "Levitating"
+            Ed Sheeran - "Bad Habits"
+            Adele - "Easy On Me"
+            Justin Bieber - "Peaches" (ft. Daniel Caesar & Giveon)
+            Doja Cat - "Kiss Me More" (ft. SZA)
+            Bruno Mars, Anderson .Paak - "Leave The Door Open" (as Silk Sonic)
+            Billie Eilish - "Therefore I Am"""
+    note = create_note(text=text, name=name, creator=request.user, category=cats, folder=folder)
+
+    context = {
+        'note': note
+    }
+    return redirect('main')
+
+
 
 
 # def login(request):
