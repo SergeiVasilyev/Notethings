@@ -1,28 +1,18 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate
+import pytz
+from datetime import datetime
 
-from .models import Note, Category, Folder
-from .services import create_note
+from .models import Note, Category, Group
 
 
 
 @login_required(login_url='/admin/login/')
 def main(request):  
-    # cat_list = ['one', 'two3', 'three']
-    # cats = [Category.objects.get_or_create(name=cat)[0] for cat in cat_list]
-
-    # folder = 'main2'
-    # folder, folder_created = Folder.objects.get_or_create(name=folder)
-
-    # name = 'Some name2'
-    # text = "Some interesting text 2"
-    # note = create_note(text=text, name=name, creator=request.user, category=cats, folder=folder)
-
     all_notes = Note.objects.all()
 
     context = {
-        # 'note': note,
         'all_notes': all_notes
     }
     return render(request, 'main.html', context)
@@ -32,25 +22,25 @@ def new_note(request):
     cat_list = ['one3']
     cats = [Category.objects.get_or_create(name=cat)[0] for cat in cat_list]
 
-    folder = 'main'
-    folder, folder_created = Folder.objects.get_or_create(name=folder)
+    group = 'main'
+    group, folder_created = Group.objects.get_or_create(name=group)
 
-    name = 'The Second Best music list'
-    text = """Olivia Rodrigo - "drivers license"
-            Lil Nas X - "Montero (Call Me By Your Name)"
-            The Weeknd - "Save Your Tears"
-            Dua Lipa - "Levitating"
-            Ed Sheeran - "Bad Habits"
-            Adele - "Easy On Me"
-            Justin Bieber - "Peaches" (ft. Daniel Caesar & Giveon)
-            Doja Cat - "Kiss Me More" (ft. SZA)
-            Bruno Mars, Anderson .Paak - "Leave The Door Open" (as Silk Sonic)
-            Billie Eilish - "Therefore I Am"""
-    note = create_note(text=text, name=name, creator=request.user, category=cats, folder=folder)
+    now = datetime.now()
+    datenow = pytz.utc.localize(now)
 
-    context = {
-        'note': note
-    }
+    name = 'The Second List of Top The Best Films'
+    text = """"Nomadland" - Chloé Zhao
+        "The Trial of the Chicago 7" - Aaron Sorkin
+        "Promising Young Woman" - Emerald Fennell
+        "Soul" - Pete Docter and Kemp Powers
+        "Mank" - David Fincher
+        "Minari" - Lee Isaac Chung
+        "Judas and the Black Messiah" - Shaka King
+        "Sound of Metal" - Darius Marder
+        "Dune" - Denis Villeneuve
+        "A Quiet Place Part II" - John Krasinski"""
+    note = Note.create_note(text=text, name=name, creator=request.user, category=cats, group=group, updated_at=datenow)
+
     return redirect('main')
 
 

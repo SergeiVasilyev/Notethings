@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Note, Category, CustomUser
+from .models import Note, Category, CustomUser, Group
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -30,8 +30,15 @@ class CustomUserAdmin(UserAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
-
+    list_display_links = ('id', 'name')
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'group', 'creator', 'color')
+    list_display_links = ('id', 'name')
+
+@admin.register(Group)
+class GroupAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
+    list_display_links = ('id', 'name')
+

@@ -13,7 +13,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
         verbose_name_plural = 'Users'
 
 
-class Folder(models.Model):
+class Group(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -48,7 +48,9 @@ class Note(models.Model):
     coeditors = models.ManyToManyField(CustomUser, related_name='coeditors')
     color = models.CharField(max_length=10, choices=COLORS, default='yellow')
     category = models.ManyToManyField(Category, related_name='category', default=None)
-    folder = models.ForeignKey(Folder, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -64,8 +66,8 @@ class Note(models.Model):
         return name
     
     @classmethod
-    def create_note(cls, name=None, text=None, creator=None, category=None, folder=None): 
+    def create_note(cls, name=None, text=None, creator=None, category=None, group=None, updated_at=None): 
         name = cls.name_validator(name, text)
-        note = cls.objects.create(name=name, text=text, creator=creator, folder=folder)
+        note = cls.objects.create(name=name, text=text, creator=creator, group=group)
         if category: note.category.set(category)
         return note
