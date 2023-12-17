@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
 import pytz
 from datetime import datetime
 
@@ -43,6 +43,10 @@ def new_note(request):
 
     return redirect('main')
 
+
+def logout_view(request):
+    logout(request)
+    return redirect('main')
 
 
 
