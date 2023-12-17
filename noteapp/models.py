@@ -45,7 +45,9 @@ class Note(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     text = models.TextField(blank=True, null=True)
     creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    coeditors = models.ManyToManyField(CustomUser, related_name='coeditors')
+    collaborators = models.ManyToManyField(CustomUser, related_name='collaborators')
+    is_private = models.BooleanField(default=True)
+    link = models.URLField(unique=True, blank=True, null=True)
     color = models.CharField(max_length=10, choices=COLORS, default='yellow')
     category = models.ManyToManyField(Category, related_name='category', default=None)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, default=None, blank=True, null=True)
@@ -68,6 +70,6 @@ class Note(models.Model):
     @classmethod
     def create_note(cls, name=None, text=None, creator=None, category=None, group=None, updated_at=None): 
         name = cls.name_validator(name, text)
-        note = cls.objects.create(name=name, text=text, creator=creator, group=group)
+        note = cls.objects.create(name=name, text=text, creator=creator, group=group, updated_at=updated_at)
         if category: note.category.set(category)
         return note

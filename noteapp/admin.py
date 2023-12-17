@@ -34,11 +34,12 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'group', 'creator', 'color')
+    list_display = ('id', 'name', 'creator', 'created_at', 'updated_at', 'is_private', 'link')
     list_display_links = ('id', 'name')
 
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     list_display_links = ('id', 'name')
+
 
