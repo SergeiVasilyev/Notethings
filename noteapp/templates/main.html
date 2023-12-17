@@ -14,16 +14,8 @@
             }
 
             colorChange.hover(function () {
-            // defines location of new color in the colors array
-                // var hexLocation = Math.floor(Math.random() * colors.length);
-                // var newcolor = colors[hexLocation];
-            
-                //replaces background property with new color when hovering
-                // $(this).css('background', newcolor);
                 $(this).css('opacity', '0.8');
             }, function() {
-                //replaces background property with original color when NOT hovering
-                // $(this).css('background', original);
                 $(this).css('opacity', '1');
             });
         })
@@ -48,10 +40,5 @@
         </div>
     </div>
 {% endfor %}
-
-
-{{note.name}} <br>
-{{note.text}} <br>
-{{note.creator.username}} <br>
 
 {% endblock main %}
