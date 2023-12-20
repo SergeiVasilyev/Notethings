@@ -1,6 +1,9 @@
+import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
+from django.forms.models import model_to_dict
 import pytz
 from datetime import datetime
 
@@ -13,9 +16,16 @@ def main(request):
     all_notes = Note.objects.all()
 
     context = {
-        'all_notes': all_notes
+        'all_notes': all_notes,
     }
     return render(request, 'main.html', context)
+
+
+def get_cards(request):
+    all_notes = list(Note.objects.values('id', 'name', 'text', 'updated_at'))
+
+    return JsonResponse(all_notes, safe=False)
+
 
 @login_required(login_url='/admin/login/')
 def new_note(request):

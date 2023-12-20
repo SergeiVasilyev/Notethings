@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.template.defaulttags import register
 
 
 class CustomUser(AbstractUser, PermissionsMixin):
@@ -66,6 +67,8 @@ class Note(models.Model):
             if text:
                 name = text[:100]
         return name
+
+
     
     @classmethod
     def create_note(cls, name=None, text=None, creator=None, category=None, group=None, updated_at=None): 
