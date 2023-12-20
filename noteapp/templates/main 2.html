@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block script %}
+<script>
+    jQuery(function($) {
+        $(document).ready(function(){
+            var note_cards = '<div class="note_cards item"></div>'
+
+            $.ajax({
+                type: 'GET',
+                url: '/get_cards/',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: (response)=> {
+                    for (var i = 0; i < response.length; i++) {
+                        console.log(response[i])
+                    }
+                },
+            })
+
+        })
+    })
+</script>
+{% endblock script %}
+
+{% block title %}Main{% endblock title %}
+
+{% block main %}
+
+    <div class="note_cards item" id="card_" >
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"></h5>
+                <p class="card-text" id="card_text_"></p>
+            </div>
+            <div class="card-footer bg-transparent border-0"><small class="text-muted">Updated at </small></div>
+        </div>
+    </div>
+
+{% endblock main %}

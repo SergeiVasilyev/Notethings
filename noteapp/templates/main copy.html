@@ -47,13 +47,27 @@
 
     <div class="note_cards item 
         {% if forloop.counter|divisibleby:3 %}third{% endif %} 
-        {% if forloop.counter|divisibleby:5 %}fifth{% endif %}">
-        <div class="card" id="card_{{forloop.counter}}">
+        {% if forloop.counter|divisibleby:5 %}fifth{% endif %}" 
+        id="card_{{forloop.counter}}" symbols="0">
+        <div class="card" idx="{{forloop.counter}}">
             <div class="card-body">
-                <h5 class="card-title">{{ note.name }}</h5>
-                <p class="card-text {% if forloop.counter|divisibleby:3 %}lines_three{% elif forloop.counter|divisibleby:5 %}lines_five{% else %}lines_two{% endif %}">{{ note.text }}</p>
+                <h5 class="card-title">{{note.name}}</h5>
+                {% if forloop.counter|divisibleby:3 %}
+                    {% with noteSlice=":"|add:"500" %}
+                    <p class="card-text" id="card_text_{{forloop.counter}}">{{note.text|slice:noteSlice}}</p>
+                    {% endwith %}
+                {% elif forloop.counter|divisibleby:5 %}
+                    {% with noteSlice=":"|add:"350" %}
+                    <p class="card-text" id="card_text_{{forloop.counter}}">{{note.text|slice:noteSlice}}</p>
+                    {% endwith %}
+                {% else %}
+                    {% with noteSlice=":"|add:"60" %}
+                    <p class="card-text" id="card_text_{{forloop.counter}}">{{note.text|slice:noteSlice}}</p>
+                    {% endwith %}
+                {% endif %}
+
             </div>
-            <div class="card-footer bg-transparent border-0"><small class="text-muted">Updated at {{ note.updated_at|date:'d.m.Y' }}</small></div>
+            <div class="card-footer bg-transparent border-0"><small class="text-muted">Updated at {{note.updated_at|date:'d.m.Y'}}</small></div>
         </div>
     </div>
 
