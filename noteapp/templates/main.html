@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'noteapp/cards.css' %}">
+{% endblock style %}
 
 {% block script %}
 <script>
@@ -14,28 +19,50 @@
             }
 
             colorChange.hover(function () {
-                $(this).css('opacity', '0.8');
+                // $(this).css('opacity', '0.8');
+                $(this).css('cursor', 'pointer');
+                $(this).find(".main-link").attr('style', 'color: #656565 !important');
             }, function() {
-                $(this).css('opacity', '1');
+                // $(this).css('opacity', '1');
+                $(this).css('cursor', 'pointer');
+                $(this).find(".main-link").attr('style', 'color: #27272a !important');
+
             });
 
 
-            var data_list = [];
-            var s = 0;
-            for (var i = 0; i < data_length; i++) {
-                var element = document.getElementById('card_'+(i+1));
-                var positionInfo = element.getBoundingClientRect();
-                var height = Math.round(positionInfo.height);
-                var width = Math.round(positionInfo.width);
-                s = Math.round(width * height / 380);
-                data_list.push(s);
-                console.log(width, height);
-                console.log(s);
-            }
+            // const card = document.querySelector(".item");
+            // const mainLink = card.querySelector(".main-link");
+            // const clickableElements = Array.from(card.querySelectorAll("a"));
+            // clickableElements.forEach((ele) =>
+            //     ele.addEventListener("click", (e) => e.stopPropagation())
+            // );
 
+            // function handleClick(event) {
+            //     const noTextSelected = !window.getSelection().toString();
 
+            //     if (noTextSelected) {
+            //         mainLink.click();
+            //     }
+            // }
+
+            // card.addEventListener("click", handleClick);
+
+            const cards = document.querySelectorAll('.item');  
+            Array.prototype.forEach.call(cards, card => {  
+                let down, up, link = card.querySelector('h5 a');
+                card.onmousedown = () => down = +new Date();
+                card.onmouseup = () => {
+                    up = +new Date();
+                    if ((up - down) < 200) {
+                        link.click();
+                    }
+                }
+});
         })
     })
+
+    
+
 </script>
 {% endblock script %}
 
@@ -43,20 +70,19 @@
 
 {% block main %}
 
+<div class="cards mt-3">
 {% for note in all_notes %}
-
-    <div class="note_cards item 
-        {% if forloop.counter|divisibleby:3 %}third{% endif %} 
-        {% if forloop.counter|divisibleby:5 %}fifth{% endif %}">
-        <div class="card" id="card_{{forloop.counter}}">
-            <div class="card-body">
-                <h5 class="card-title">{{ note.name }}</h5>
-                <p class="card-text {% if forloop.counter|divisibleby:3 %}lines_three{% elif forloop.counter|divisibleby:5 %}lines_five{% else %}lines_two{% endif %}">{{ note.text }}</p>
+        <div class="note_cards item 
+            {% if forloop.counter|divisibleby:5 %}fifth{% elif forloop.counter|divisibleby:3 %}third{% else %}other_cards{% endif %}">
+            <div class="card" id="card_{{forloop.counter}}">
+                <div class="card-body">
+                    <h5 class="card-title"><a class="main-link" href="{% url 'card' note.id %}">{{forloop.counter}} {{ note.name }}</a></h5>
+                    <p class="card-text {% if forloop.counter|divisibleby:5 %}lines_five{% elif forloop.counter|divisibleby:3 %}lines_three{% else %}lines_two{% endif %}">{{ note.text }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0"><small class="text-muted">Updated at {{ note.updated_at|date:'d.m.Y' }}</small></div>
             </div>
-            <div class="card-footer bg-transparent border-0"><small class="text-muted">Updated at {{ note.updated_at|date:'d.m.Y' }}</small></div>
         </div>
-    </div>
-
 {% endfor %}
+</div>
 
 {% endblock main %}
