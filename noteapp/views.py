@@ -10,6 +10,9 @@ from datetime import datetime
 from .models import Note, Category, Group
 
 
+def home(request):
+    return render(request, 'home.html')
+
 
 @login_required(login_url='/admin/login/')
 def main(request):  
@@ -21,6 +24,17 @@ def main(request):
     return render(request, 'main.html', context)
 
 
+def card(request, idx):
+    note = Note.objects.get(id=idx)
+    context = {
+        'note': note
+    }
+    return render(request, 'card.html', context)
+
+
+
+# Cards for Ajax
+@login_required(login_url='/admin/login/')
 def get_cards(request):
     all_notes = list(Note.objects.values('id', 'name', 'text', 'updated_at'))
 
