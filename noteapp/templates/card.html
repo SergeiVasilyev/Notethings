@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'noteapp/card.css' %}">
+{% endblock style %}
+
+{% block title %}Card{% endblock title %}
+
+{% block script %}
+<script>
+
+</script>
+{% endblock script %}
+
+{% block main %}
+<div class="note row justify-content-md-center">
+    <div class="col col-lg-8">
+        <h1>{{ note.name }}</h1>
+        <p>{{ note.text }}</p>
+    </div>
+</div>
+{% endblock main %}
