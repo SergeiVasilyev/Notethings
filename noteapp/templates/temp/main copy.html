@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block script %}
+<script>
+    jQuery(function($) {
+        $(document).ready(function(){
+            var colorChange = $('.card');
+            var original = colorChange.css('background');
+            var colors = ['#8dedcd', ' #93b1f8', '#94ebca', '#cc99f2', '#e68383','#e6dc7e','#4B99C2'];
+            var data_length = '{{all_notes|length}}'
+            for (var i = 0; i < data_length; i++) {
+                var hexLocation = Math.floor(Math.random() * colors.length);
+                colorChange[i].style.background = colors[hexLocation];
+            }
+
+            colorChange.hover(function () {
+                $(this).css('opacity', '0.8');
+            }, function() {
+                $(this).css('opacity', '1');
+            });
+
+
+            var data_list = [];
+            var s = 0;
+            for (var i = 0; i < data_length; i++) {
+                var element = document.getElementById('card_'+(i+1));
+                var positionInfo = element.getBoundingClientRect();
+                var height = Math.round(positionInfo.height);
+                var width = Math.round(positionInfo.width);
+                s = Math.round(width * height / 380);
+                data_list.push(s);
+                console.log(width, height);
+                console.log(s);
+            }
+
+
+        })
+    })
+</script>
+{% endblock script %}
+
+{% block title %}Main{% endblock title %}
+
+{% block main %}
+
+{% for note in all_notes %}
+
+    <div class="note_cards item 
+        {% if forloop.counter|divisibleby:3 %}third{% endif %} 
+        {% if forloop.counter|divisibleby:5 %}fifth{% endif %}" 
+        id="card_{{forloop.counter}}" symbols="0">
+        <div class="card" idx="{{forloop.counter}}">
+            <div class="card-body">
+                <h5 class="card-title">{{note.name}}</h5>
+                {% if forloop.counter|divisibleby:3 %}
+                    {% with noteSlice=":"|add:"500" %}
+                    <p class="card-text" id="card_text_{{forloop.counter}}">{{note.text|slice:noteSlice}}</p>
+                    {% endwith %}
+                {% elif forloop.counter|divisibleby:5 %}
+                    {% with noteSlice=":"|add:"350" %}
+                    <p class="card-text" id="card_text_{{forloop.counter}}">{{note.text|slice:noteSlice}}</p>
+                    {% endwith %}
+                {% else %}
+                    {% with noteSlice=":"|add:"60" %}
+                    <p class="card-text" id="card_text_{{forloop.counter}}">{{note.text|slice:noteSlice}}</p>
+                    {% endwith %}
+                {% endif %}
+
+            </div>
+            <div class="card-footer bg-transparent border-0"><small class="text-muted">Updated at {{note.updated_at|date:'d.m.Y'}}</small></div>
+        </div>
+    </div>
+
+{% endfor %}
+
+{% endblock main %}
