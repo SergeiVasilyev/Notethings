@@ -19,7 +19,7 @@ from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from noteapp.views import main, new_note, logout_view, get_cards, home, card
+from noteapp.views import main, new_note, logout_view, get_cards, home, card, edit_card
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +31,5 @@ urlpatterns = [
     path('get_cards/', get_cards, name='get_cards'),
     path('home/', home, name='home'),
     path('card/<int:idx>/', card, name='card'),
+    path('edit_card/<int:idx>/', edit_card, name='edit_card'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -67,6 +67,18 @@ def new_note(request):
 
     return redirect('main')
 
+def edit_card(request, idx):
+    note = Note.objects.get(id=idx)
+    if request.method == 'POST':
+        note.name = request.POST.get('name')
+        note.text = request.POST.get('editor_content')
+        note.save()
+        return redirect('main')
+    context = {
+        'note': note
+    }
+    return render(request, 'edit_card.html', context)
+
 
 def logout_view(request):
     logout(request)

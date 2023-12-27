@@ -16,6 +16,7 @@
 
 .card-title a:hover {
     color: #656565 !important;
+    /* text-shadow: #ffffff 1.3px 1.3px 1px; */
 }
 
 .card {
