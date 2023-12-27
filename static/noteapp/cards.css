@@ -25,7 +25,7 @@
     border: 0px;
     /* background-color: var(--main_bg_red); */
     /* border: 1px solid rgb(83, 83, 83); */
-    overflow: hidden !important;
+    /* overflow: hidden !important; */
 }
 
 .text-muted {
@@ -36,7 +36,7 @@
     /* text-overflow: ellipsis;
     white-space: nowrap;
     overflow: clip; */
-    border: 1px solid red;
+    /* border: 1px solid red; */
     display: block;
     display: -webkit-box;
     text-overflow: ellipsis;
