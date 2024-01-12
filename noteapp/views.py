@@ -1,15 +1,17 @@
 import json
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
+from django.contrib import messages
 import pytz
 from datetime import datetime
 
 from .models import Note, Category, Group
+from .forms import NoteForm
 
-
+@login_required(login_url='/admin/login/')
 def home(request):
     return render(request, 'home.html')
 
@@ -23,7 +25,7 @@ def main(request):
     }
     return render(request, 'main.html', context)
 
-
+@login_required(login_url='/admin/login/')
 def card(request, idx):
     note = Note.objects.get(id=idx)
     context = {
@@ -67,15 +69,26 @@ def new_note(request):
 
     return redirect('main')
 
+@login_required(login_url='/admin/login/')
 def edit_card(request, idx):
-    note = Note.objects.get(id=idx)
+    instance = get_object_or_404(Note, id=idx)
     if request.method == 'POST':
-        note.name = request.POST.get('name')
-        note.text = request.POST.get('editor_content')
-        note.save()
-        return redirect('main')
+        print(instance.creator, instance.category)
+        form = NoteForm(request.POST or None, instance=instance)
+        form.creator = request.user
+        form.category = None
+        print(form.errors)
+        if form.is_valid():
+            print('VALID')
+            form.save()
+            # return redirect('/{}/'.format(instance.id))
+            return redirect('edit_card', idx=instance.id)
+    else:
+        form = NoteForm(instance=instance)
+
     context = {
-        'note': note
+        'note': instance,
+        'form': form,
     }
     return render(request, 'edit_card.html', context)
 

@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% for message in messages %}
+<h1>{{message}}</h1>
+{% endfor %}
 
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{% static 'noteapp/card.css' %}">
@@ -8,31 +11,26 @@
 {% block title %}Edit{% endblock title %}
 
 {% block script %}
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor/config.js' %}"></script>
+
 {% endblock script %}
 
 
 {% block main %}
 <form action="" method="post">
 {% csrf_token %}
+
 <div class="note row justify-content-md-center">
     <div class="col col-lg-8">
+        <button type="submit" class="btn btn-success mt-4 px-4 btn_bgcolor">Save</button>
         <h1 contenteditable="plaintext-only" name="name" data-target="name">{{ note.name }}</h1>
         <input type="hidden" name="name" id="name" value="{{ note.name }}">
-        <textarea name="editor_content" id="editor_content">{{ note.text|safe }}</textarea>
+        {{ form.text }}
+        <!-- <textarea name="editor_content" id="editor_content">{{ note.text|safe }}</textarea> -->
         <button type="submit" class="btn btn-success mt-4 px-4 btn_bgcolor">Save</button>
     </div>
 </div>
 </form>
-
-<script>
-    CKEDITOR.replace('editor_content', {
-        // uiColor: '#9AB8F3',
-        customConfig: '../ckeditor_config.js'
-    });
-</script>
+{{ form.media }}
 <script>
     const items = document.querySelectorAll('[contenteditable]');
     const itemsLength = items.length;
@@ -46,4 +44,28 @@
     });
     }
 </script>
+<script>
+    $(document).ready(function() {
+        console.log($('.cdx-input').val());
+        // Dealing with Input width
+        let widthMachine = document.querySelector(".width-machine");
+    
+        // Dealing with Textarea Height
+        function calcHeight(value) {
+        let numberOfLineBreaks = (value.match(/\n/g) || []).length;
+        // min-height + lines x line-height + padding + border
+        let newHeight = 20 + numberOfLineBreaks * 20 + 12 + 2;
+        return newHeight;
+        }
+    
+        let textarea = document.querySelector(".cdx-input");
+        console.log(textarea);
+        if (textarea) {
+        textarea.addEventListener("keyup", () => {
+            textarea.style.height = calcHeight(textarea.value) + "px";
+        });
+        }
+    });
+</script>
+
 {% endblock main %}

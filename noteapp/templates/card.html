@@ -14,10 +14,11 @@
 {% endblock script %}
 
 {% block main %}
+{% load editorjs %}
 <div class="note row justify-content-md-center">
     <div class="col col-lg-8">
         <h1 contenteditable="plaintext-only">{{ note.name }}</h1>
-        <p>{{ note.text|safe }}</p>
+        <p>{{ note.text | editorjs }}</p>
     </div>
 </div>
 
