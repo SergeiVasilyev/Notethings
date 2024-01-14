@@ -11,6 +11,22 @@
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/config.js' %}"></script>
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'autoresize ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      branding: false,
+      draggable_modal: true,
+      tinycomments_mode: 'embedded',
+      tinycomments_author: '{% if note.creator.first_name %}{{ note.creator.first_name }} {{ note.creator.last_name }}{% else %}{{ note.creator.username }}{% endif %}',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ],
+      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+    });
+</script>
 {% endblock script %}
 
 
@@ -18,10 +34,11 @@
 <form action="" method="post">
 {% csrf_token %}
 <div class="note row justify-content-md-center">
-    <div class="col col-lg-8">
+    <div class="col">
         <h1 contenteditable="plaintext-only" name="name" data-target="name">{{ note.name }}</h1>
         <input type="hidden" name="name" id="name" value="{{ note.name }}">
-        <textarea name="editor_content" id="editor_content">{{ note.text|safe }}</textarea>
+
+        <textarea name="tyni_text">{{ note.text|safe }}</textarea>
         <button type="submit" class="btn btn-success mt-4 px-4 btn_bgcolor">Save</button>
     </div>
 </div>
