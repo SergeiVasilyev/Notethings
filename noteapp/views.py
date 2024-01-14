@@ -9,7 +9,7 @@ from datetime import datetime
 
 from .models import Note, Category, Group
 
-
+@login_required(login_url='/admin/login/')
 def home(request):
     return render(request, 'home.html')
 
@@ -23,7 +23,7 @@ def main(request):
     }
     return render(request, 'main.html', context)
 
-
+@login_required(login_url='/admin/login/')
 def card(request, idx):
     note = Note.objects.get(id=idx)
     context = {
@@ -67,13 +67,16 @@ def new_note(request):
 
     return redirect('main')
 
+@login_required(login_url='/admin/login/')
 def edit_card(request, idx):
     note = Note.objects.get(id=idx)
     if request.method == 'POST':
+        print(request.POST)
         note.name = request.POST.get('name')
-        note.text = request.POST.get('editor_content')
+        # note.text = request.POST.get('editor_content')
+        note.text = request.POST.get('tyni_text')
         note.save()
-        return redirect('main')
+        return redirect('edit_card', idx)
     context = {
         'note': note
     }

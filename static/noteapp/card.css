@@ -6,6 +6,10 @@
     /* margin: 0 auto; */
 }
 
+.note > div {
+    /* border: 1px solid red; */
+}
+
 h1 {
     padding: 0.5rem 0;
 }
@@ -21,3 +25,4 @@ code {
 /* #cke_editor_content, .cke_inner {
     height: 100% !important;
 } */
+

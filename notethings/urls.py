@@ -23,8 +23,6 @@ from noteapp.views import main, new_note, logout_view, get_cards, home, card, ed
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('ckeditor/', include('ckeditor_uploader.urls')),
-    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
     path('', main, name='main'),
     path('new_note/', new_note, name='new_note'),
     path('logout/', logout_view, name='logout_view'),
