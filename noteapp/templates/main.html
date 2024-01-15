@@ -57,7 +57,7 @@
                         link.click();
                     }
                 }
-});
+            });
         })
     })
 
@@ -70,7 +70,22 @@
 
 {% block main %}
 
-<div class="cards mt-3">
+<nav aria-label="Page navigation" class="d-flex justify-content-center mt-3">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="?{% if all_notes.has_previous %}page={{ all_notes.previous_page_number }}{% endif %}" tabindex="-1">Previous</a>
+      </li>
+      {% for i in all_notes.paginator.page_range %}
+      <li class="page-item {% if all_notes.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endfor %}
+
+      <li class="page-item">
+        <a class="page-link" href="?{% if all_notes.has_next %}page={{ all_notes.next_page_number }}{% endif %}">Next</a>
+      </li>
+    </ul>
+</nav>
+
+<div class="cards">
 {% for note in all_notes %}
         <div class="note_cards item 
             {% if forloop.counter|divisibleby:5 %}fifth{% elif forloop.counter|divisibleby:3 %}third{% else %}other_cards{% endif %}">

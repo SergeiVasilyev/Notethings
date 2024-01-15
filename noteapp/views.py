@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
+from django.core.paginator import Paginator
 import pytz
 from datetime import datetime
 
@@ -16,10 +17,14 @@ def home(request):
 
 @login_required(login_url='/admin/login/')
 def main(request):  
-    all_notes = Note.objects.all()
+    all_notes = Note.objects.all().order_by('-updated_at')
 
+    paginator = Paginator(all_notes, 30)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    
     context = {
-        'all_notes': all_notes,
+        'all_notes': page,
     }
     return render(request, 'main.html', context)
 
@@ -71,12 +76,11 @@ def new_note(request):
 def edit_card(request, idx):
     note = Note.objects.get(id=idx)
     if request.method == 'POST':
-        print(request.POST)
         note.name = request.POST.get('name')
-        # note.text = request.POST.get('editor_content')
         note.text = request.POST.get('tyni_text')
         note.save()
         return redirect('edit_card', idx)
+    
     context = {
         'note': note
     }
