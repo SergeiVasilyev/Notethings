@@ -2,7 +2,7 @@
 
 Web application for taking notes
 
-## Install and run
+## Running code
 
 Build & Run
 ```
