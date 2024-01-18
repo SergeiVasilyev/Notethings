@@ -91,7 +91,7 @@
             {% if forloop.counter|divisibleby:5 %}fifth{% elif forloop.counter|divisibleby:3 %}third{% else %}other_cards{% endif %}">
             <div class="card" id="card_{{forloop.counter}}">
                 <div class="card-body">
-                    <h5 class="card-title"><a class="main-link" href="{% url 'edit_note' note.id %}">{{forloop.counter}} {{ note.name }}</a></h5>
+                    <h5 class="card-title"><a class="main-link" href="{% url 'edit_note' note.id %}">{{ note.name }}</a></h5>
                     <div class="card-text {% if forloop.counter|divisibleby:5 %}lines_five{% elif forloop.counter|divisibleby:3 %}lines_three{% else %}lines_two{% endif %}">{{ note.text|safe }}</div>
                 </div>
                 <div class="card-footer bg-transparent border-0"><small class="text-muted">Updated at {{ note.updated_at|date:'d.m.Y' }}</small></div>
