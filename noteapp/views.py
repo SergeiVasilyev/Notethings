@@ -37,13 +37,45 @@ def note(request, idx):
     return render(request, 'note.html', context)
 
 
-
-# Cards for Ajax
 @login_required(login_url='/admin/login/')
-def get_cards(request):
-    all_notes = list(Note.objects.values('id', 'name', 'text', 'updated_at'))
+def create_note(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        text = request.POST.get('tyni_text')
 
-    return JsonResponse(all_notes, safe=False)
+        now = datetime.now()
+        datenow = pytz.utc.localize(now)
+
+        group = 'main'
+        group, folder_created = Group.objects.get_or_create(name=group)
+
+        note = Note.create_note(text=text, name=name, creator=request.user, updated_at=datenow, group=group)
+        return redirect('edit_note', note.id)
+    
+    return render(request, 'create_note.html')
+
+
+@login_required(login_url='/admin/login/')
+def edit_note(request, idx):
+    note = Note.objects.get(id=idx)
+    if request.method == 'POST':
+        note.name = request.POST.get('name')
+        note.text = request.POST.get('tyni_text')
+        note.save()
+        return redirect('edit_note', idx)
+    
+    context = {
+        'note': note
+    }
+    return render(request, 'edit_note.html', context)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('main')
+
+
+
 
 
 @login_required(login_url='/admin/login/')
@@ -71,27 +103,6 @@ def new_note(request):
     note = Note.create_note(text=text, name=name, creator=request.user, category=cats, group=group, updated_at=datenow)
 
     return redirect('main')
-
-@login_required(login_url='/admin/login/')
-def edit_note(request, idx):
-    note = Note.objects.get(id=idx)
-    if request.method == 'POST':
-        note.name = request.POST.get('name')
-        note.text = request.POST.get('tyni_text')
-        note.save()
-        return redirect('edit_note', idx)
-    
-    context = {
-        'note': note
-    }
-    return render(request, 'edit_note.html', context)
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('main')
-
-
 
 # def login(request):
 #     if request.method == 'POST':

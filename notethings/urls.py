@@ -19,14 +19,14 @@ from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from noteapp.views import main, new_note, logout_view, get_cards, home, note, edit_note
+from noteapp.views import main, new_note, logout_view, home, note, edit_note, create_note
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main, name='main'),
     path('new_note/', new_note, name='new_note'),
+    path('create_note/', create_note, name='create_note'),
     path('logout/', logout_view, name='logout_view'),
-    path('get_cards/', get_cards, name='get_cards'),
     path('home/', home, name='home'),
     path('note/<int:idx>/', note, name='note'),
     path('edit_note/<int:idx>/', edit_note, name='edit_note'),
