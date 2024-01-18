@@ -26,9 +26,9 @@ docker-compose logs -f
 ```
 
 ### Notes example
-![desctop screenshot](https://github.com/SergeiVasilyev/Notethings/blob/main/docs/images/desctop_screenshot.png)
+![desctop screenshot](https://github.com/SergeiVasilyev/Notethings/blob/main/docs/images/desctop_screenshot_2.png)
 
-![desctop screenshot](https://github.com/SergeiVasilyev/Notethings/blob/main/docs/images/mobile_screenshot.png)
+![desctop screenshot](https://github.com/SergeiVasilyev/Notethings/blob/main/docs/images/Note.png)
 
 
 ## Stack
