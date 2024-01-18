@@ -29,12 +29,12 @@ def main(request):
     return render(request, 'main.html', context)
 
 @login_required(login_url='/admin/login/')
-def card(request, idx):
+def note(request, idx):
     note = Note.objects.get(id=idx)
     context = {
         'note': note
     }
-    return render(request, 'card.html', context)
+    return render(request, 'note.html', context)
 
 
 
@@ -73,18 +73,18 @@ def new_note(request):
     return redirect('main')
 
 @login_required(login_url='/admin/login/')
-def edit_card(request, idx):
+def edit_note(request, idx):
     note = Note.objects.get(id=idx)
     if request.method == 'POST':
         note.name = request.POST.get('name')
         note.text = request.POST.get('tyni_text')
         note.save()
-        return redirect('edit_card', idx)
+        return redirect('edit_note', idx)
     
     context = {
         'note': note
     }
-    return render(request, 'edit_card.html', context)
+    return render(request, 'edit_note.html', context)
 
 
 def logout_view(request):
