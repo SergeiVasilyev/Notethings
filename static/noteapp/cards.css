@@ -1,12 +1,16 @@
+.card-text * {
+    font-size: 1em;
+    font-weight: 400;
+    text-decoration: none;
+    color: black;
+}
+
 .cards {
     display: grid;
     grid-auto-flow: dense;
     grid-auto-rows: minmax(100px, auto);
     gap: 10px;
-    /* grid-column-gap: 15px; */
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    /* border: 1px solid green; */
-    /* font-size: calc(16px + 1vw); */
 }
 
 .card-title a {
@@ -16,7 +20,6 @@
 
 .card-title a:hover {
     color: #656565 !important;
-    /* text-shadow: #ffffff 1.3px 1.3px 1px; */
 }
 
 .card {
