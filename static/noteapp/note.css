@@ -1,5 +1,5 @@
 .note {
-    color: aliceblue !important;
+    /* color: aliceblue !important; */
     padding: 1rem;
     /* height: 100vh; */
     /* max-width: 50%; */
@@ -26,3 +26,6 @@ code {
     height: 100% !important;
 } */
 
+/* .heading, .hdc {
+    color: rgb(155, 132, 176) !important;
+} */

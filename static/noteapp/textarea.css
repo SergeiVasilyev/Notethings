@@ -1,0 +1,38 @@
+:root {
+    color-scheme: light dark;
+
+}
+  
+@media (prefers-color-scheme: light) {
+    #tinymce {
+        color: black;
+        background-color: white;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    #tinymce {
+        color: white !important;
+        background-color: black !important;
+    }
+}
+
+/* :root {
+    --grid-unit: 1rem;
+    --border-radius-base: 0.5rem;
+  }
+  
+  [data-theme="light"] {
+    --color-bg: #ffffff;
+    --color-fg: #000000;
+  }
+  
+  [data-theme="dark"] {
+    --color-bg: #000000;
+    --color-fg: #ffffff;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+  } */
