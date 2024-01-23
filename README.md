@@ -1,6 +1,6 @@
 # NoteThings
 
-Web application for taking notes
+Web Notes App
 
 ## Running code
 
