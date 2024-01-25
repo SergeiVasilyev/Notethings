@@ -8,6 +8,8 @@ from django.core.paginator import Paginator
 import pytz
 from datetime import datetime
 
+from noteapp.forms import NoteForm
+
 from .models import Note, Category, Group
 
 @login_required(login_url='/admin/login/')
@@ -55,19 +57,38 @@ def create_note(request):
     return render(request, 'create_note.html')
 
 
+# @login_required(login_url='/admin/login/')
+# def edit_note(request, idx):
+#     note = Note.objects.get(id=idx)
+#     if request.method == 'POST':
+#         note.name = request.POST.get('name')
+#         note.text = request.POST.get('tyni_text')
+#         note.save()
+#         return redirect('edit_note', idx)
+    
+#     context = {
+#         'note': note
+#     }
+#     return render(request, 'edit_note.html', context)
+
 @login_required(login_url='/admin/login/')
 def edit_note(request, idx):
     note = Note.objects.get(id=idx)
+    note_form = NoteForm(instance=note)
     if request.method == 'POST':
-        note.name = request.POST.get('name')
-        note.text = request.POST.get('tyni_text')
-        note.save()
-        return redirect('edit_note', idx)
+        request.POST._mutable = True
+        request.POST['creator'] = request.user
+        note_form = NoteForm(request.POST, request.FILES, instance=note)
+        if note_form.is_valid():
+            note_form.save()
+            return redirect('edit_note', idx)
     
     context = {
-        'note': note
+        'note': note,
+        'note_form': note_form
     }
     return render(request, 'edit_note.html', context)
+
 
 
 def logout_view(request):

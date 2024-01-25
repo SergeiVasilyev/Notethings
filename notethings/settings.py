@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'noteapp',
+    'django_quill',
 ]
 
 MIDDLEWARE = [
@@ -136,4 +137,26 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/noteapp/images')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'noteapp.CustomUser'
+
+# QUILL_CONFIGS = {
+#     'default':{
+#         'theme': 'snow',
+#         'modules': {
+#             'syntax': True,
+#             'toolbar': [
+#                 [
+#                     {'font': []},
+#                     {'header': []},
+#                     {'align': []},
+#                     'bold', 'italic', 'underline', 'strike', 'blockquote',
+#                     {'color': []},
+#                     {'background': []},
+#                 ],
+#                 ['code-block', 'link'],
+#                 ['clean'],
+#             ]
+#         }
+#     }
+# }
+
 
