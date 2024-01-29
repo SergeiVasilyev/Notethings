@@ -3,39 +3,13 @@
 
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{% static 'noteapp/note.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'noteapp/textarea.css' %}">
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'noteapp/textarea.css' %}"> -->
 {{ note_form.media }}
 {% endblock style %}
 
 {% block title %}Edit{% endblock title %}
 
 {% block script %}
-<script>
-    tinymce.init({
-        selector: 'textarea',
-        formats: {
-            custom_format: { block: 'h1', attributes: { title: 'Header' }, styles: { color: 'red' } }
-        },
-        plugins: 'importcss',
-        content_css: "{% static 'noteapp/textarea.css' %}",
-        importcss_append: true,
-        plugins: 'autoresize ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        skin: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oxide-dark' : 'oxide'),
-        // content_css: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default'),
-        branding: false,
-        menubar: true,
-        min_height: 400,
-        draggable_modal: true,
-        tinycomments_mode: 'embedded',
-        tinycomments_author: '{% if note.creator.first_name %}{{ note.creator.first_name }} {{ note.creator.last_name }}{% else %}{{ note.creator.username }}{% endif %}',
-        mergetags_list: [
-            { value: 'First.Name', title: 'First Name' },
-            { value: 'Email', title: 'Email' },
-        ],
-        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-    });
-</script>
 {% endblock script %}
 
 
@@ -51,7 +25,7 @@
         <div class="mt-4">
             <input type="hidden" name="name" id="name" value="{{ note.name }}">
             <!-- <textarea name="tyni_text">{{ note.text|safe }}</textarea> -->
-            {{ note_form.text }}
+            {{ note_form.text|safe }}
         </div>
         <div class="d-flex justify-content-end mt-4">
             <button type="submit" class="btn btn-success px-4 h-100 btn_bgcolor">Save</button>
