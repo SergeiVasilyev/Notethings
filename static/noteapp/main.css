@@ -7,11 +7,40 @@
     --main_bg_yellow: #e6dc7e;
     --dark_bg_color: #27272a;
     --bright_bg_color: #f5f5f5;
+    --gray_bg_color: gainsboro;
 }
+
+/* ' #93b1f8', '#94ebca', '#cc99f2', '#e68383','#e6dc7e','#4B99C2' */
 
 body {
-    background-color: var(--dark_bg_color);
-    color: aliceblue !important;
+    /* background-color: var(--dark_bg_color);
+    color: aliceblue !important; */
+    color-scheme: light dark;
 }
 
+@media (prefers-color-scheme: light) {
+    body {
+        color: var(--dark_bg_color) !important;
+        background-color: var(--bright_bg_color) !important;
+    }
+    
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        color: var(--bright_bg_color) !important;
+        background-color: var(--dark_bg_color) !important;
+    }
+    nav a {
+        color: var(--bright_bg_color) !important;
+    }
+    .pagination, .page-link{
+        background-color: var(--dark_bg_color) !important;
+        color: var(--bright_bg_color) !important;
+    }
+    .page-item.active .page-link {
+        border-color: var(--main_bg_blue) !important;
+        color: var(--main_bg_blue) !important;
+    }
+}
 
