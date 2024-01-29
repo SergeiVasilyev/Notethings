@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.db.models.query import QuerySet
 from django.template.defaulttags import register
-from django_quill.fields import QuillField
+from django_quill.fields import QuillField, FieldQuill, QuillDescriptor
+from .html_to_delta import convert_html_to_delta
+import json
 
 
 class CustomUser(AbstractUser, PermissionsMixin):
@@ -33,6 +36,42 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 
+
+class CustomFieldQuill(FieldQuill):
+    def __init__(self, instance, field, json_string):
+        # print('json_string', json_string)
+        # json_string = json.dumps({"delta":"{\"ops\":[{\"insert\":\"Test text\\n\"}]}","html":"<p>Test text</p>"})
+        # try:
+        #     json.loads(json_string)
+        # except:
+        #     delta = convert_html_to_delta(json_string)
+        #     print(delta)
+        #     json_data = {
+        #         "delta":delta,
+        #         "html":json_string
+        #     }
+        #     print(json_data)
+        #     # json_data = '{"delta":{"ops":[{"insert":"Test222 text"}]},"html":"<p>Test text</p>"}'
+        #     json_string = json.dumps(json_data)
+        #     print(json_string)
+        super().__init__(instance, field, json_string)
+
+    @property
+    def html(self):
+        self._require_quill()
+        try:
+            text = self.quill.html
+        except:
+            text = self.json_string
+        return text
+    
+class CustomQuillField(QuillField):
+    attr_class = CustomFieldQuill
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    
+
 class Note(models.Model):
     COLORS = (
         ('yellow', 'yellow'),
@@ -45,8 +84,7 @@ class Note(models.Model):
     )
 
     name = models.CharField(max_length=100, blank=True, null=True)
-    # text = models.TextField(blank=True, null=True)
-    text = QuillField()
+    text = CustomQuillField(blank=True, null=True)
     creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     collaborators = models.ManyToManyField(CustomUser, related_name='collaborators')
     is_private = models.BooleanField(default=True)
@@ -69,6 +107,15 @@ class Note(models.Model):
             if text:
                 name = text[:100]
         return name
+    
+    @property
+    def html(self):
+        # print(self.text.html)
+        try:
+            text = self.text.html
+        except:
+            text = ''
+        return text
 
 
     
