@@ -38,7 +38,7 @@ def convert_html_to_delta(html_string):
         
         # elif element.name in ("em", "i"):
         #     convert_italic(element, delta["ops"])
-    print('delta', delta)
+
     return delta
 
 def convert_paragraph(element, ops):

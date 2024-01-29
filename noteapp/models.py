@@ -39,21 +39,6 @@ class Category(models.Model):
 
 class CustomFieldQuill(FieldQuill):
     def __init__(self, instance, field, json_string):
-        # print('json_string', json_string)
-        # json_string = json.dumps({"delta":"{\"ops\":[{\"insert\":\"Test text\\n\"}]}","html":"<p>Test text</p>"})
-        # try:
-        #     json.loads(json_string)
-        # except:
-        #     delta = convert_html_to_delta(json_string)
-        #     print(delta)
-        #     json_data = {
-        #         "delta":delta,
-        #         "html":json_string
-        #     }
-        #     print(json_data)
-        #     # json_data = '{"delta":{"ops":[{"insert":"Test222 text"}]},"html":"<p>Test text</p>"}'
-        #     json_string = json.dumps(json_data)
-        #     print(json_string)
         super().__init__(instance, field, json_string)
 
     @property

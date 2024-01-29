@@ -60,20 +60,6 @@ def create_note(request):
     return render(request, 'create_note.html')
 
 
-# @login_required(login_url='/admin/login/')
-# def edit_note(request, idx):
-#     note = Note.objects.get(id=idx)
-#     if request.method == 'POST':
-#         note.name = request.POST.get('name')
-#         note.text = request.POST.get('tyni_text')
-#         note.save()
-#         return redirect('edit_note', idx)
-    
-#     context = {
-#         'note': note
-#     }
-#     return render(request, 'edit_note.html', context)
-
 @login_required(login_url='/admin/login/')
 def edit_note(request, idx):
     note = Note.objects.get(id=idx)
@@ -88,7 +74,7 @@ def edit_note(request, idx):
         }
         json_data = json.dumps(json_data)
         note.text = json_data
-        print(json_data)
+
     note_form = NoteForm(instance=note)
     if request.method == 'POST':
         request.POST._mutable = True
