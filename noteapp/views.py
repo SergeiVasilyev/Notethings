@@ -12,6 +12,8 @@ from noteapp.forms import NoteForm
 
 from .models import Note, Category, Group
 
+from .html_to_delta import convert_html_to_delta
+
 @login_required(login_url='/admin/login/')
 def home(request):
     return render(request, 'home.html')
@@ -33,6 +35,7 @@ def main(request):
 @login_required(login_url='/admin/login/')
 def note(request, idx):
     note = Note.objects.get(id=idx)
+    
     context = {
         'note': note
     }
@@ -74,6 +77,18 @@ def create_note(request):
 @login_required(login_url='/admin/login/')
 def edit_note(request, idx):
     note = Note.objects.get(id=idx)
+    try: # if data in db is Quill delta
+        note.text.delta
+    except: # if data in db is html
+        delta = convert_html_to_delta(note.text.html)
+        delta = json.dumps(delta)
+        json_data = {
+            "delta":delta,
+            "html":note.text.html
+        }
+        json_data = json.dumps(json_data)
+        note.text = json_data
+        print(json_data)
     note_form = NoteForm(instance=note)
     if request.method == 'POST':
         request.POST._mutable = True
