@@ -44,20 +44,29 @@ def note(request, idx):
 
 @login_required(login_url='/admin/login/')
 def create_note(request):
+    note_form = NoteForm(request.POST)
     if request.method == 'POST':
-        name = request.POST.get('name')
-        text = request.POST.get('tyni_text')
+        request.POST._mutable = True
+        request.POST['creator'] = request.user
+        note_form = NoteForm(request.POST, request.FILES)
 
         now = datetime.now()
         datenow = pytz.utc.localize(now)
+        request.POST['updated_at'] = datenow
 
         group = 'main'
         group, folder_created = Group.objects.get_or_create(name=group)
+        request.POST['group'] = group
 
-        note = Note.create_note(text=text, name=name, creator=request.user, updated_at=datenow, group=group)
-        return redirect('edit_note', note.id)
+        if note_form.is_valid():
+            note_form.save()
+            return redirect('main')
     
-    return render(request, 'create_note.html')
+    context = {
+        'note_form': note_form
+    }
+
+    return render(request, 'create_note.html', context)
 
 
 @login_required(login_url='/admin/login/')

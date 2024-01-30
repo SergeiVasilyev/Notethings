@@ -3,7 +3,6 @@
 
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{% static 'noteapp/note.css' %}">
-<!-- <link rel="stylesheet" type="text/css" href="{% static 'noteapp/textarea.css' %}"> -->
 {{ note_form.media }}
 {% endblock style %}
 
@@ -12,39 +11,6 @@
 {% block script %}
 {% endblock script %}
 
-
 {% block main %}
-<form action="" method="post">
-{% csrf_token %}
-<div class="note row justify-content-md-center">
-    <div class="col">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1 contenteditable="plaintext-only" name="name" data-target="name">{{ note.name }}</h1>
-            <button type="submit" class="btn btn-success px-4 ms-5 h-100 btn_bgcolor">Save</button>
-        </div>
-        <div class="mt-4">
-            <input type="hidden" name="name" id="name" value="{{ note.name }}">
-            <!-- <textarea name="tyni_text">{{ note.text|safe }}</textarea> -->
-            {{ note_form.text|safe }}
-        </div>
-        <!-- <div class="d-flex justify-content-end mt-4">
-            <button type="submit" class="btn btn-success px-4 h-100 btn_bgcolor">Save</button>
-        </div> -->
-    </div>
-</div>
-</form>
-
-<script>
-    const items = document.querySelectorAll('[contenteditable]');
-    const itemsLength = items.length;
-
-    for (let i = 0; i < itemsLength; i++) {
-    let item = items[i];
-
-    item.addEventListener('input', () => {
-        let target = document.getElementById(item.getAttribute('data-target'));
-        target.value = item.textContent;
-    });
-    }
-</script>
+{% include 'quill_form.html' %}
 {% endblock main %}
