@@ -8,7 +8,11 @@ from django.core.paginator import Paginator
 import pytz
 from datetime import datetime
 
+from noteapp.forms import NoteForm
+
 from .models import Note, Category, Group
+
+from .html_to_delta import convert_html_to_delta
 
 @login_required(login_url='/admin/login/')
 def home(request):
@@ -31,6 +35,7 @@ def main(request):
 @login_required(login_url='/admin/login/')
 def note(request, idx):
     note = Note.objects.get(id=idx)
+    
     context = {
         'note': note
     }
@@ -39,35 +44,61 @@ def note(request, idx):
 
 @login_required(login_url='/admin/login/')
 def create_note(request):
+    note_form = NoteForm(request.POST)
     if request.method == 'POST':
-        name = request.POST.get('name')
-        text = request.POST.get('tyni_text')
+        request.POST._mutable = True
+        request.POST['creator'] = request.user
+        note_form = NoteForm(request.POST, request.FILES)
 
         now = datetime.now()
         datenow = pytz.utc.localize(now)
+        request.POST['updated_at'] = datenow
 
         group = 'main'
         group, folder_created = Group.objects.get_or_create(name=group)
+        request.POST['group'] = group
 
-        note = Note.create_note(text=text, name=name, creator=request.user, updated_at=datenow, group=group)
-        return redirect('edit_note', note.id)
+        if note_form.is_valid():
+            note_form.save()
+            return redirect('main')
     
-    return render(request, 'create_note.html')
+    context = {
+        'note_form': note_form
+    }
+
+    return render(request, 'create_note.html', context)
 
 
 @login_required(login_url='/admin/login/')
 def edit_note(request, idx):
     note = Note.objects.get(id=idx)
+    try: # if data in db is Quill delta
+        note.text.delta
+    except: # if data in db is html
+        delta = convert_html_to_delta(note.text.html)
+        delta = json.dumps(delta)
+        json_data = {
+            "delta":delta,
+            "html":note.text.html
+        }
+        json_data = json.dumps(json_data)
+        note.text = json_data
+
+    note_form = NoteForm(instance=note)
     if request.method == 'POST':
-        note.name = request.POST.get('name')
-        note.text = request.POST.get('tyni_text')
-        note.save()
-        return redirect('edit_note', idx)
+        request.POST._mutable = True
+        request.POST['creator'] = request.user
+        note_form = NoteForm(request.POST, request.FILES, instance=note)
+        if note_form.is_valid():
+            note_form.save()
+            return redirect('edit_note', idx)
     
     context = {
-        'note': note
+        'note': note,
+        'note_form': note_form
     }
     return render(request, 'edit_note.html', context)
+
 
 
 def logout_view(request):

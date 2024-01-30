@@ -3,72 +3,14 @@
 
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{% static 'noteapp/note.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'noteapp/textarea.css' %}">
+{{ note_form.media }}
 {% endblock style %}
 
 {% block title %}Edit{% endblock title %}
 
 {% block script %}
-<script>
-    tinymce.init({
-        selector: 'textarea',
-        formats: {
-            custom_format: { block: 'h1', attributes: { title: 'Header' }, styles: { color: 'red' } }
-        },
-        plugins: 'importcss',
-        content_css: "{% static 'noteapp/textarea.css' %}",
-        importcss_append: true,
-        plugins: 'autoresize ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        skin: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oxide-dark' : 'oxide'),
-        // content_css: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default'),
-        branding: false,
-        menubar: true,
-        min_height: 400,
-        draggable_modal: true,
-        tinycomments_mode: 'embedded',
-        tinycomments_author: '{% if note.creator.first_name %}{{ note.creator.first_name }} {{ note.creator.last_name }}{% else %}{{ note.creator.username }}{% endif %}',
-        mergetags_list: [
-            { value: 'First.Name', title: 'First Name' },
-            { value: 'Email', title: 'Email' },
-        ],
-        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-    });
-</script>
 {% endblock script %}
 
-
 {% block main %}
-<form action="" method="post">
-{% csrf_token %}
-<div class="note row justify-content-md-center">
-    <div class="col">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1 contenteditable="plaintext-only" name="name" data-target="name">{{ note.name }}</h1>
-            <button type="submit" class="btn btn-success px-4 ms-5 h-100 btn_bgcolor">Save</button>
-        </div>
-        <div class="mt-4">
-            <input type="hidden" name="name" id="name" value="{{ note.name }}">
-            <textarea name="tyni_text">{{ note.text|safe }}</textarea>
-        </div>
-        <div class="d-flex justify-content-end mt-4">
-            <button type="submit" class="btn btn-success px-4 h-100 btn_bgcolor">Save</button>
-        </div>
-    </div>
-</div>
-</form>
-
-<script>
-    const items = document.querySelectorAll('[contenteditable]');
-    const itemsLength = items.length;
-
-    for (let i = 0; i < itemsLength; i++) {
-    let item = items[i];
-
-    item.addEventListener('input', () => {
-        let target = document.getElementById(item.getAttribute('data-target'));
-        target.value = item.textContent;
-    });
-    }
-</script>
+{% include 'quill_form.html' %}
 {% endblock main %}
