@@ -18,7 +18,7 @@ div.form-row div.django-quill-widget-container {
 }
 
 #quill-id_text {
-    border: 0px;
+    /* border: 1px; */
 }
 
 .quill-editor iframe,
