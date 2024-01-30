@@ -1,13 +1,20 @@
+:root {
+    --main_bg_aquamarine: #8dedcd;
+    --main_bg_blue: #93b1f8;
+    --main_bg_green: #94ebca;
+    --main_bg_indigo: #cc99f2;
+    --main_bg_red: #e68383;
+    --main_bg_yellow: #e6dc7e;
+    --dark_bg_color: #27272a;
+    --bright_bg_color: #f5f5f5;
+}
+
 .note {
     /* color: aliceblue !important; */
     padding: 1rem;
-    /* height: 100vh; */
+    /* height: 100dvh; */
     /* max-width: 50%; */
     /* margin: 0 auto; */
-}
-
-.col > div {
-    /* border: 1px solid red; */
 }
 
 h1 {
@@ -15,18 +22,3 @@ h1 {
     width: 100%;
 }
 
-code {
-    
-}
-
-#editor_content {
-    /* height: 100vh; */
-}
-
-/* #cke_editor_content, .cke_inner {
-    height: 100% !important;
-} */
-
-/* .heading, .hdc {
-    color: rgb(155, 132, 176) !important;
-} */

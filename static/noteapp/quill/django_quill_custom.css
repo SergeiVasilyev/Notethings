@@ -1,0 +1,49 @@
+:root {
+    --main_bg_aquamarine: #8dedcd;
+    --main_bg_blue: #93b1f8;
+    --main_bg_green: #94ebca;
+    --main_bg_indigo: #cc99f2;
+    --main_bg_red: #e68383;
+    --main_bg_yellow: #e6dc7e;
+    --dark_bg_color: #27272a;
+    --bright_bg_color: #f5f5f5;
+}
+
+div.form-row div.django-quill-widget-container {
+    display: inline-block;
+}
+
+.ql-editor {
+    /* height: 100lvh; */
+}
+
+#quill-id_text {
+    /* border: 1px; */
+}
+
+.quill-editor iframe,
+.quill-editor video,
+button.ytp-large-play-button,
+button.ytp-button {
+    pointer-events: none;
+}
+
+.ql-snow span {
+    color: gainsboro !important;
+}
+
+.ql-bold .ql-stroke, .ql-italic .ql-stroke, .ql-underline .ql-stroke, .ql-strike .ql-stroke, .ql-blockquote .ql-stroke, .ql-color .ql-stroke, .ql-background .ql-stroke, .ql-picker-label .ql-stroke, .ql-picker-options .ql-stroke, .ql-formats .ql-stroke {
+    /* filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%); */
+    stroke: gainsboro;
+}
+.ql-strike .ql-fill, .ql-underline .ql-fill, .ql-blockquote .ql-fill.ql-stroke, .ql-align .ql-picker-label .ql-stroke, .ql-formats .ql-fill {
+    fill: gainsboro;
+}
+.ql-bold.ql-active .ql-stroke, .ql-align.ql-expanded {
+    stroke: #06c;
+}
+
+.ql-picker-options {
+    background-color: var(--dark_bg_color) !important;
+    color: #fff !important;
+}
